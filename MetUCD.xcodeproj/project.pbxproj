@@ -7,22 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		17B834252B0A8705001E4279 /* MetUCDApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B834242B0A8705001E4279 /* MetUCDApp.swift */; };
-		17B834272B0A8705001E4279 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B834262B0A8705001E4279 /* ContentView.swift */; };
-		17B834292B0A8707001E4279 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B834282B0A8707001E4279 /* Assets.xcassets */; };
-		17B8342C2B0A8707001E4279 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17B8342B2B0A8707001E4279 /* Preview Assets.xcassets */; };
+		65CB57E02ACEBDFB00E77B24 /* MetUCDApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CB57DF2ACEBDFB00E77B24 /* MetUCDApp.swift */; };
+		65CB57E42ACEBDFB00E77B24 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CB57E32ACEBDFB00E77B24 /* Assets.xcassets */; };
+		65CB57E72ACEBDFB00E77B24 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CB57E62ACEBDFB00E77B24 /* Preview Assets.xcassets */; };
+		65CB57F02ACEBE1000E77B24 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CB57ED2ACEBE0F00E77B24 /* WeatherViewModel.swift */; };
+		65CB57F12ACEBE1000E77B24 /* WeatherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CB57EF2ACEBE1000E77B24 /* WeatherView.swift */; };
+		65CB57F22ACEBE1000E77B24 /* WeatherDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CB57EE2ACEBE1000E77B24 /* WeatherDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		17B834212B0A8705001E4279 /* MetUCD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetUCD.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		17B834242B0A8705001E4279 /* MetUCDApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetUCDApp.swift; sourceTree = "<group>"; };
-		17B834262B0A8705001E4279 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		17B834282B0A8707001E4279 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		17B8342B2B0A8707001E4279 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		65CB57DC2ACEBDFB00E77B24 /* MetUCD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetUCD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CB57DF2ACEBDFB00E77B24 /* MetUCDApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetUCDApp.swift; sourceTree = "<group>"; };
+		65CB57E32ACEBDFB00E77B24 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		65CB57E62ACEBDFB00E77B24 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		65CB57ED2ACEBE0F00E77B24 /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		65CB57EE2ACEBE1000E77B24 /* WeatherDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDataModel.swift; sourceTree = "<group>"; };
+		65CB57EF2ACEBE1000E77B24 /* WeatherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherView.swift; sourceTree = "<group>"; };
+		65CB57F32ACEBE9B00E77B24 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		17B8341E2B0A8705001E4279 /* Frameworks */ = {
+		65CB57D92ACEBDFB00E77B24 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -32,37 +37,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		17B834182B0A8705001E4279 = {
+		65CB57D32ACEBDFB00E77B24 = {
 			isa = PBXGroup;
 			children = (
-				17B834232B0A8705001E4279 /* MetUCD */,
-				17B834222B0A8705001E4279 /* Products */,
+				65CB57F32ACEBE9B00E77B24 /* README.md */,
+				65CB57DE2ACEBDFB00E77B24 /* MetUCD */,
+				65CB57DD2ACEBDFB00E77B24 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		17B834222B0A8705001E4279 /* Products */ = {
+		65CB57DD2ACEBDFB00E77B24 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				17B834212B0A8705001E4279 /* MetUCD.app */,
+				65CB57DC2ACEBDFB00E77B24 /* MetUCD.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		17B834232B0A8705001E4279 /* MetUCD */ = {
+		65CB57DE2ACEBDFB00E77B24 /* MetUCD */ = {
 			isa = PBXGroup;
 			children = (
-				17B834242B0A8705001E4279 /* MetUCDApp.swift */,
-				17B834262B0A8705001E4279 /* ContentView.swift */,
-				17B834282B0A8707001E4279 /* Assets.xcassets */,
-				17B8342A2B0A8707001E4279 /* Preview Content */,
+				65CB57DF2ACEBDFB00E77B24 /* MetUCDApp.swift */,
+				65CB57EE2ACEBE1000E77B24 /* WeatherDataModel.swift */,
+				65CB57ED2ACEBE0F00E77B24 /* WeatherViewModel.swift */,
+				65CB57EF2ACEBE1000E77B24 /* WeatherView.swift */,
+				65CB57E32ACEBDFB00E77B24 /* Assets.xcassets */,
+				65CB57E52ACEBDFB00E77B24 /* Preview Content */,
 			);
 			path = MetUCD;
 			sourceTree = "<group>";
 		};
-		17B8342A2B0A8707001E4279 /* Preview Content */ = {
+		65CB57E52ACEBDFB00E77B24 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				17B8342B2B0A8707001E4279 /* Preview Assets.xcassets */,
+				65CB57E62ACEBDFB00E77B24 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -70,13 +78,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		17B834202B0A8705001E4279 /* MetUCD */ = {
+		65CB57DB2ACEBDFB00E77B24 /* MetUCD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17B8342F2B0A8707001E4279 /* Build configuration list for PBXNativeTarget "MetUCD" */;
+			buildConfigurationList = 65CB57EA2ACEBDFB00E77B24 /* Build configuration list for PBXNativeTarget "MetUCD" */;
 			buildPhases = (
-				17B8341D2B0A8705001E4279 /* Sources */,
-				17B8341E2B0A8705001E4279 /* Frameworks */,
-				17B8341F2B0A8705001E4279 /* Resources */,
+				65CB57D82ACEBDFB00E77B24 /* Sources */,
+				65CB57D92ACEBDFB00E77B24 /* Frameworks */,
+				65CB57DA2ACEBDFB00E77B24 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -84,25 +92,25 @@
 			);
 			name = MetUCD;
 			productName = MetUCD;
-			productReference = 17B834212B0A8705001E4279 /* MetUCD.app */;
+			productReference = 65CB57DC2ACEBDFB00E77B24 /* MetUCD.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		17B834192B0A8705001E4279 /* Project object */ = {
+		65CB57D42ACEBDFB00E77B24 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					17B834202B0A8705001E4279 = {
-						CreatedOnToolsVersion = 15.0.1;
+					65CB57DB2ACEBDFB00E77B24 = {
+						CreatedOnToolsVersion = 15.0;
 					};
 				};
 			};
-			buildConfigurationList = 17B8341C2B0A8705001E4279 /* Build configuration list for PBXProject "MetUCD" */;
+			buildConfigurationList = 65CB57D72ACEBDFB00E77B24 /* Build configuration list for PBXProject "MetUCD" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -110,42 +118,44 @@
 				en,
 				Base,
 			);
-			mainGroup = 17B834182B0A8705001E4279;
-			productRefGroup = 17B834222B0A8705001E4279 /* Products */;
+			mainGroup = 65CB57D32ACEBDFB00E77B24;
+			productRefGroup = 65CB57DD2ACEBDFB00E77B24 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				17B834202B0A8705001E4279 /* MetUCD */,
+				65CB57DB2ACEBDFB00E77B24 /* MetUCD */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		17B8341F2B0A8705001E4279 /* Resources */ = {
+		65CB57DA2ACEBDFB00E77B24 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17B8342C2B0A8707001E4279 /* Preview Assets.xcassets in Resources */,
-				17B834292B0A8707001E4279 /* Assets.xcassets in Resources */,
+				65CB57E72ACEBDFB00E77B24 /* Preview Assets.xcassets in Resources */,
+				65CB57E42ACEBDFB00E77B24 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		17B8341D2B0A8705001E4279 /* Sources */ = {
+		65CB57D82ACEBDFB00E77B24 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17B834272B0A8705001E4279 /* ContentView.swift in Sources */,
-				17B834252B0A8705001E4279 /* MetUCDApp.swift in Sources */,
+				65CB57F22ACEBE1000E77B24 /* WeatherDataModel.swift in Sources */,
+				65CB57F02ACEBE1000E77B24 /* WeatherViewModel.swift in Sources */,
+				65CB57E02ACEBDFB00E77B24 /* MetUCDApp.swift in Sources */,
+				65CB57F12ACEBE1000E77B24 /* WeatherView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		17B8342D2B0A8707001E4279 /* Debug */ = {
+		65CB57E82ACEBDFB00E77B24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -208,7 +218,7 @@
 			};
 			name = Debug;
 		};
-		17B8342E2B0A8707001E4279 /* Release */ = {
+		65CB57E92ACEBDFB00E77B24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -264,7 +274,7 @@
 			};
 			name = Release;
 		};
-		17B834302B0A8707001E4279 /* Debug */ = {
+		65CB57EB2ACEBDFB00E77B24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -272,7 +282,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MetUCD/Preview Content\"";
-				DEVELOPMENT_TEAM = 3UZLTPPVXQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -285,7 +294,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ie.ucd.cs.comp47390.22203610.MetUCD;
+				PRODUCT_BUNDLE_IDENTIFIER = ie.ucd.cs.comp47390.MetUCD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -293,7 +302,7 @@
 			};
 			name = Debug;
 		};
-		17B834312B0A8707001E4279 /* Release */ = {
+		65CB57EC2ACEBDFB00E77B24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -301,7 +310,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MetUCD/Preview Content\"";
-				DEVELOPMENT_TEAM = 3UZLTPPVXQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -314,7 +322,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = ie.ucd.cs.comp47390.22203610.MetUCD;
+				PRODUCT_BUNDLE_IDENTIFIER = ie.ucd.cs.comp47390.MetUCD;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -325,25 +333,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		17B8341C2B0A8705001E4279 /* Build configuration list for PBXProject "MetUCD" */ = {
+		65CB57D72ACEBDFB00E77B24 /* Build configuration list for PBXProject "MetUCD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17B8342D2B0A8707001E4279 /* Debug */,
-				17B8342E2B0A8707001E4279 /* Release */,
+				65CB57E82ACEBDFB00E77B24 /* Debug */,
+				65CB57E92ACEBDFB00E77B24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		17B8342F2B0A8707001E4279 /* Build configuration list for PBXNativeTarget "MetUCD" */ = {
+		65CB57EA2ACEBDFB00E77B24 /* Build configuration list for PBXNativeTarget "MetUCD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17B834302B0A8707001E4279 /* Debug */,
-				17B834312B0A8707001E4279 /* Release */,
+				65CB57EB2ACEBDFB00E77B24 /* Debug */,
+				65CB57EC2ACEBDFB00E77B24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 17B834192B0A8705001E4279 /* Project object */;
+	rootObject = 65CB57D42ACEBDFB00E77B24 /* Project object */;
 }

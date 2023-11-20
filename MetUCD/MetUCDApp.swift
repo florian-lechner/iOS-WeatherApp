@@ -2,16 +2,17 @@
 //  MetUCDApp.swift
 //  MetUCD
 //
-//  Created by Flo Lechner on 19.11.2023.
+//  Created by Instructor on 05/10/2023.
 //
 
 import SwiftUI
 
 @main
 struct MetUCDApp: App {
+    let viewModel = WeatherViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WeatherView(viewModel: viewModel)
         }
     }
 }
