@@ -356,8 +356,8 @@ struct WeatherDetail: View {
             // 5 Day Forecast
             if let forecastInfo = forecastInfo {
                 Section {
-                    ForEach(forecastInfo.day.indices, id: \.self) { index in
-                        ForecastRow(day: forecastInfo.day[index], lowHighTemp: forecastInfo.lowHighTemp[index])
+                    ForEach(forecastInfo.days, id: \.date) { dayInfo in
+                        ForecastRow(dayInfo: dayInfo)
                     }
                 } header: { Text("5 Day Forecast").modifier(HeaderStyle())
                 }
@@ -457,19 +457,53 @@ struct LowHighStyle: ViewModifier {
 
 // Helper view to display each forecast row
 struct ForecastRow: View {
-    let day: String
-    let lowHighTemp: String
+    let dayInfo: ForecastDayInfo
     
     var body: some View {
-        HStack {
-            Text(day)
-                .bold()
-                .foregroundColor(.primary)
-            Spacer()
-            Image(systemName: "thermometer")
-                .foregroundColor(.gray)
-            Text(lowHighTemp).modifier(LowHighStyle())
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text(dayInfo.dateString) // Day
+                    .bold()
+                    .foregroundColor(.primary)
+                Spacer()
+                Image(systemName: "thermometer")
+                    .foregroundColor(.gray)
+                Text(dayInfo.lowHighTemp)
+                    .modifier(LowHighStyle())
+            }
+            HStack(spacing: 4) {
+                if dayInfo.dateString == "Today" && dayInfo.hourlyForecasts.count < 8 {
+                        Spacer()
+                }
+                ForEach(dayInfo.hourlyForecasts, id: \.time) { hourlyForecast in
+                    VStack(spacing: 2) {
+                        Text(hourlyForecast.time) // time
+                            .fontWeight(.medium)
+                        SafeImage(imageName: hourlyForecast.icon)
+                            /*.frame(width: 35, height: 35)
+                            .background(Color.gray.opacity(0.15))
+                            .clipShape(RoundedRectangle(cornerRadius: 5))*/
+                    }
+                    .frame(width: 38, height: 60)
+                    .background(Color.gray.opacity(0.15))
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+            }
         }
+    }
+}
+
+
+// Shows referenced image as forecast icon unless the image does not exist in assets, then the cloud (04d) is used as default
+struct SafeImage: View {
+    var imageName: String
+    let fallbackImageName = "04d"  // Cloud icon
+
+    var body: some View {
+        Image(uiImage: UIImage(named: imageName) ?? UIImage(named: fallbackImageName)!)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 30, height: 30)
     }
 }
 

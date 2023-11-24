@@ -263,14 +263,27 @@ struct WeatherInfo {
 }
 
 struct ForecastInfo {
-    var day: [String]
-    var lowHighTemp: [String]
+    var days: [ForecastDayInfo]
+}
+
+struct ForecastDayInfo {
+    var dateString: String
+    var date: Date //for correct sorting
+    var lowHighTemp: String
+    var lowTemp: Double
+    var highTemp: Double
+    var hourlyForecasts: [HourlyForecast]
+}
+
+struct HourlyForecast {
+    var time: String
+    var icon: String
 }
 
 extension Date {
     func dayWord() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E" // Day of the week
+        dateFormatter.dateFormat = "EEEE" // Day of the week
         return dateFormatter.string(from: self)
     }
 }

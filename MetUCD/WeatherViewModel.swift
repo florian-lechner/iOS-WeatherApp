@@ -158,46 +158,60 @@ import MapKit
     var forecastInfo: ForecastInfo? {
         guard let forecastData = dataModel.forecastData, let timezoneOffset = dataModel.weatherData?.timezone else { return nil }
         
-        let calendar = Calendar.current
+        var daysInfo = [ForecastDayInfo]()
+        let groupedForecasts = groupForecastsByDay(forecasts: forecastData.list, timezoneOffset: timezoneOffset)
 
-        var days = [String]()
-        var lowHighTemps = [String]()
+        let timezone = TimeZone(secondsFromGMT: timezoneOffset) ?? TimeZone.current
+        var calendar = Calendar.current
+        calendar.timeZone = timezone
+        
+        let localCurrentDate = calendar.startOfDay(for: Date())
+        
+        for (date, forecasts) in groupedForecasts {
+            // Check if the date is today - for that I convert the current time to the timezone
+            let localDateToCheck = calendar.startOfDay(for: date)
 
-        // Group the remaining forecasts by day considering the timezone offset
-        let groupedForecasts = Dictionary(grouping: forecastData.list) { forecastItem in
-            // Adjust the forecast time for the timezone offset
-            let adjustedDate = Date(timeIntervalSince1970: TimeInterval(forecastItem.dt) + Double(timezoneOffset))
+            let isToday = calendar.isDate(localDateToCheck, equalTo: localCurrentDate, toGranularity: .day)
+            let dayString = date.dayWord()
+            let day = isToday ? "Today" : dayString
+
+            // find lowest and highest Temp of the day
+            let lowTemp = forecasts.min(by: { $0.main.tempMin < $1.main.tempMin })?.main.tempMin ?? 0.0
+            let highTemp = forecasts.max(by: { $0.main.tempMax < $1.main.tempMax })?.main.tempMax ?? 0.0
+            let lowHighTemp = "Low: \(formatTemperature(lowTemp))\tHigh: \(formatTemperature(highTemp))"
+
+            let hourlyForecasts = forecasts.map { forecast -> HourlyForecast in
+                let hour = calendar.component(.hour, from: Date(timeIntervalSince1970: TimeInterval(forecast.dt)))
+                return HourlyForecast(time: "\(hour)H", icon: forecast.weather.first?.icon ?? "")
+            }
+                .sorted { Int($0.time.dropLast()) ?? 0 < Int($1.time.dropLast()) ?? 0 } // Sort HourlyForecast
+
+            daysInfo.append(ForecastDayInfo(
+                dateString: day,
+                date: date,
+                lowHighTemp: lowHighTemp,
+                lowTemp: lowTemp,
+                highTemp: highTemp,
+                hourlyForecasts: hourlyForecasts
+            ))
+        }
+        
+        // Sort daysInfo based on date
+        let sortedDaysInfo = daysInfo.sorted { $0.date < $1.date }
+        
+        return ForecastInfo(days: sortedDaysInfo)
+    }
+
+    private func groupForecastsByDay(forecasts: [FiveDayForecastData.ForecastItem], timezoneOffset: Int) -> [Date: [FiveDayForecastData.ForecastItem]] {
+        var calendar = Calendar.current
+        let timezone = TimeZone(secondsFromGMT: timezoneOffset) ?? TimeZone.current
+        calendar.timeZone = timezone
+        return Dictionary(grouping: forecasts) { forecastItem in
+            let adjustedDate = Date(timeIntervalSince1970: TimeInterval(forecastItem.dt))
             return calendar.startOfDay(for: adjustedDate)
         }
-
-
-        // Sort the days and get the first entry for each day
-        let sortedKeys = groupedForecasts.keys.sorted()
-        for key in sortedKeys {
-            if let forecastsForDay = groupedForecasts[key],
-               let firstForecast = forecastsForDay.first {
-                let adjustedDate = Date(timeIntervalSince1970: TimeInterval(firstForecast.dt) + Double(timezoneOffset))
-                let day = adjustedDate.dayWord()
-                days.append(day)
-
-                let lowHighTemp = "(L: \(formatTemperature(firstForecast.main.tempMin)) H: \(formatTemperature(firstForecast.main.tempMax)))"
-                lowHighTemps.append(lowHighTemp)
-            }
-        }
-        
-        // Replace the first day with "Today"
-        if !days.isEmpty {
-            days[0] = "Today"
-        }
-
-        // Ensure that we only take today and the next 5 entries
-        let endIndex = min(days.count, 6)
-        return ForecastInfo(
-            day: Array(days[..<endIndex]),
-            lowHighTemp: Array(lowHighTemps[..<endIndex])
-        )
-        
     }
+
     
     // MARK: Helper Methods
     

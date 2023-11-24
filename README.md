@@ -26,7 +26,7 @@ Weather Detail Sheet
 
 ## Appendix
 
-### Rough Design
+### Rough Design Part 1
 Search
 (Search bar)
 
