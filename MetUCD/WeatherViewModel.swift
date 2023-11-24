@@ -7,8 +7,18 @@
 
 import SwiftUI
 import CoreLocation
+import MapKit
 
-@Observable class WeatherViewModel {
+@Observable class WeatherViewModel: NSObject, CLLocationManagerDelegate {
+    // Location Manager
+    var authorizationStatus : CLAuthorizationStatus = .notDetermined
+    private let locationManager = CLLocationManager()
+    
+    private var lastKnownLocation: CLLocationCoordinate2D?
+    var coordinates : CLLocationCoordinate2D? {
+        didSet { self.fetchData() }
+    }
+    
     var namedLocation: String = ""
     
     // MARK: Model
@@ -19,27 +29,90 @@ import CoreLocation
     
     func fetchData() {
         Task {
+            if let location = coordinates {
+                await dataModel.fetchCoordinates(lat: location.latitude, lon: location.longitude)
+            }
+        }
+    }
+    
+    func fetchLocation() {
+        Task {
             await dataModel.fetch(for: namedLocation)
             
             // Update namedLocation with the name of the first GeoLocation, if available
             if let firstGeoLocation = dataModel.geoLocationData?.first {
                 DispatchQueue.main.async {
                     self.namedLocation = firstGeoLocation.name
+                    self.coordinates = CLLocationCoordinate2D(latitude: firstGeoLocation.lat, longitude: firstGeoLocation.lon)
                 }
             }
         }
     }
     
+    // MARK: LocationManager
+    override init() {
+        /*self.region = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 53.3498006, longitude: -6.2602964),
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        )*/
+        super.init()
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+    }
+   
+    func requestLocationPermission() {
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        authorizationStatus = manager.authorizationStatus
+    }
+    
+    // MARK: Location Manager Delegate Function
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else {return}
+        self.lastKnownLocation = location.coordinate
+        if self.coordinates == nil {
+            self.coordinates = self.lastKnownLocation
+        }
+    }
+    
+    // MARK: Center Map on User Location
+    func centerMapOnUserLocation() {
+        if let currentLocation = self.lastKnownLocation {
+            self.coordinates = currentLocation // Use the stored location
+        }
+    }
+    
+    
+    
+    // MARK: Computed properties to construct WidgetInfo
+    var widgetInfo: WidgetInfo? {
+        guard let weatherData = dataModel.weatherData else { return nil }
+    
+        let lowHighTempString = "(L: \(formatTemperature(weatherData.main.tempMin)) H: \(formatTemperature(weatherData.main.tempMax)))"
+        
+        return WidgetInfo(
+            name: weatherData.name,
+            currentTemp: String(format: "%.0f°", weatherData.main.tempMin),
+            description: weatherData.description.capitalized,
+            lowHighTemp: lowHighTempString
+        )
+    }
+    
     // MARK: Public Properties
     var airQualityInfo: AirQualityData? { dataModel.airQualityData }
+    var airPollutionForecastInfo: AirPollutionData? { dataModel.airPollutionForecastData }
       
     
     // MARK: Computed properties to construct GeoInfo
     var geoInfo: GeoInfo? {
-        guard let geoLocationData = dataModel.geoLocationData?.first, let weatherData = dataModel.weatherData else { return nil }
+        guard let coordinates = coordinates, let weatherData = dataModel.weatherData else { return nil }
     
-        let latitudeString = convertCoordinate(geoLocationData.lat, isLatitude: true)
-        let longitudeString = convertCoordinate(geoLocationData.lon, isLatitude: false)
+        // Take coordinates from pin
+        let latitudeString = convertCoordinate(coordinates.latitude, isLatitude: true) //convertCoordinate(geoLocationData.lat, isLatitude: true)
+        let longitudeString =  convertCoordinate(coordinates.longitude, isLatitude: false)//convertCoordinate(geoLocationData.lon, isLatitude: false)
+        
         let sunriseString = timeString(from: weatherData.sys.sunrise, timezoneOffset: weatherData.timezone)
         let sunsetString = timeString(from: weatherData.sys.sunset, timezoneOffset: weatherData.timezone)
         let timezoneOffsetString = formatTimezoneOffset(weatherData.timezone)
@@ -80,7 +153,6 @@ import CoreLocation
     
     // MARK: Computed properties to construct ForecastInfo
     // We take the first forecast for each day to represent the daily forecast.
-    // We use DateFormatter to get the weekday name.
     // We format the day and temperature strings and append them to the respective arrays.
 
     var forecastInfo: ForecastInfo? {

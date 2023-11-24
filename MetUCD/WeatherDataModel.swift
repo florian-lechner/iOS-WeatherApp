@@ -12,13 +12,16 @@ import Foundation
 struct WeatherDataModel {
     private(set) var geoLocationData: GeoLocationData?
     private(set) var weatherData: WeatherData?
-    private(set) var airQualityData: AirQualityData?
+    var airQualityData: AirQualityData? { airPollutionForecastData?.list.first ?? nil }
     private(set) var forecastData: FiveDayForecastData?
+    private(set) var airPollutionForecastData: AirPollutionData?
     
     private mutating func clear() {
         geoLocationData = nil
         weatherData = nil
-        airQualityData = nil
+        forecastData = nil
+        airPollutionForecastData = nil
+        //airQualityData = nil
     }
     
     mutating func fetch(for location: String) async {
@@ -26,9 +29,20 @@ struct WeatherDataModel {
         geoLocationData = await OpenWeatherMapAPI.geoLocation(for: location, countLimit: 1)
         if let geoLocations = geoLocationData, let location = geoLocations.first {
             weatherData = await OpenWeatherMapAPI.weatherData(lat: location.lat, lon: location.lon)
-            airQualityData = await OpenWeatherMapAPI.airQualityData(lat: location.lat, lon: location.lon)
+            airPollutionForecastData = await OpenWeatherMapAPI.airPollutionForecastData(lat: location.lat, lon: location.lon)
             forecastData = await OpenWeatherMapAPI.fiveDayForecastData(lat: location.lat, lon: location.lon)
         }
+    }
+    
+    mutating func fetchCoordinates(lat: Double, lon: Double) async {
+        clear()
+        weatherData = await OpenWeatherMapAPI.weatherData(lat: lat, lon: lon)
+        airPollutionForecastData = await OpenWeatherMapAPI.airPollutionForecastData(lat: lat, lon: lon)
+        forecastData = await OpenWeatherMapAPI.fiveDayForecastData(lat: lat, lon: lon)
+        if let request = weatherData {
+            geoLocationData = await OpenWeatherMapAPI.geoLocation(for: request.name, countLimit: 1)
+        }
+        
     }
 }
 
@@ -67,15 +81,9 @@ struct OpenWeatherMapAPI {
         
     }
     
-    static func airQualityData(lat: Double, lon: Double) async -> AirQualityData? {
+    static func airPollutionForecastData(lat: Double, lon: Double) async -> AirPollutionData? {
         let apiString = "data/2.5/air_pollution/forecast?lat=\(lat)&lon=\(lon)"
-        do {
-            let response: AirPollutionResponse = try await fetch(from: apiString, asType: AirPollutionResponse.self)
-            return response.list.first
-        } catch {
-            print("Error fetching air quality data: \(error)")
-            return nil
-        }
+        return try? await OpenWeatherMapAPI.fetch(from: apiString, asType: AirPollutionData.self)
     }
     
 }
@@ -144,6 +152,7 @@ struct WeatherData: Codable, CustomStringConvertible {
     let clouds: Clouds
     let sys: Sys
     let timezone: Int
+    let name: String
         
     var description: String {
         return weather.first?.description ?? "N/A"
@@ -177,13 +186,14 @@ struct WeatherUtils {
 
 // MARK: - Air Quality
 
-struct AirPollutionResponse: Codable {
+struct AirPollutionData: Codable {
     let list: [AirQualityData]
 }
 
 struct AirQualityData: Codable, CustomStringConvertible {
     let main: Main
     let components: Components
+    let dt: Int
 
     struct Main: Codable {
         let aqi: Int
@@ -224,6 +234,13 @@ struct AirQualityData: Codable, CustomStringConvertible {
 }
 
 // MARK: Structure for Date in View
+struct WidgetInfo {
+    var name: String
+    var currentTemp: String
+    var description: String
+    var lowHighTemp: String
+}
+
 
 struct GeoInfo {
     var latitude: String
