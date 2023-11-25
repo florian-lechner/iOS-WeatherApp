@@ -21,18 +21,9 @@ struct WeatherView: View {
     
     var body: some View {
         ZStack {
-            // MARK: Map
-            if let coordinates = viewModel.coordinates {
-                MapView(coordinate: Binding(get: { coordinates }, set: { viewModel.coordinates = $0 }), viewModel: viewModel)
-                    .ignoresSafeArea(edges: .all)
-            } else {
-                Text("Retrieving your location...")
-            }
-            
             // MARK: Permission Button
             if viewModel.authorizationStatus != .authorizedWhenInUse {
                 VStack {
-                    Spacer()
                     Button {
                         viewModel.requestLocationPermission()
                     } label: {
@@ -40,66 +31,80 @@ struct WeatherView: View {
                             .padding()
                     }
                 }
+                .onAppear{
+                    viewModel.requestLocationPermission()
+                }
+            } else { // If permission is granted
+                // MARK: Map
+                if let coordinates = viewModel.coordinates {
+                    MapView(coordinate: Binding(get: { coordinates }, set: { viewModel.coordinates = $0 }), viewModel: viewModel)
+                        .ignoresSafeArea(edges: .all)
+                } else {
+                    // If current location hasn't been found yet
+                    Text("Retrieving your location...")
+                }
+                
+                // MARK: Location and Search Button
+                VStack {
+                    HStack {
+                        if !isShowingSearchField {
+                            Button(action: {
+                                viewModel.centerMapOnUserLocation()
+                            }) {
+                                Image(systemName: "location.fill")
+                                    .padding()
+                                    .background(Color.white.opacity(0.75))
+                                    .clipShape(Circle())
+                            }
+                            .padding(.leading, 20)
+                            
+                            Spacer()
+                        
+                            // Search Button
+                            Button(action: {
+                                withAnimation {
+                                    isShowingSearchField = true
+                                    isSearchFieldFocused = true
+                                    viewModel.namedLocation = ""
+                                }
+                            }) {
+                                Image(systemName: "magnifyingglass")
+                                    .padding()
+                                    .background(Color.white.opacity(0.75))
+                                    .clipShape(Circle())
+                            }
+                            .padding(.trailing, 20)
+                        }
+                        // Search Text Field
+                        if isShowingSearchField {
+                        TextField("Search", text: $viewModel.namedLocation)
+                            .onSubmit { viewModel.fetchLocation() }
+                            .textFieldStyle(PlainTextFieldStyle())
+                            .padding(.vertical, 12)
+                            .padding(.horizontal)
+                            .background(Color.white.opacity(0.9))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .focused($isSearchFieldFocused)
+                            .frame(width: UIScreen.main.bounds.width * 0.8)
+                        }
+                    }
+                    Spacer()
+                    
+                    // Weather Info Widget
+                    if let widgetInfo = viewModel.widgetInfo {
+                        WeatherInfoWidget(widgetInfo: widgetInfo)
+                            .onTapGesture {
+                                isShowingWheaterDetailSheet = true
+                            }
+                    }
+                }
+                // Display the Weather Details
+                .sheet(isPresented: $isShowingWheaterDetailSheet) {
+                    WeatherDetail(geoInfo: viewModel.geoInfo, weatherInfo: viewModel.weatherInfo, forecastInfo: viewModel.forecastInfo, airQualityInfo: viewModel.airQualityInfo, airPollutionForecastInfo: viewModel.airPollutionForecastInfo)
+                }
             }
             
-            // MARK: Location and Search Button
-            VStack {
-                HStack {
-                    if !isShowingSearchField {
-                        Button(action: {
-                            viewModel.centerMapOnUserLocation()
-                        }) {
-                            Image(systemName: "location.fill")
-                                .padding()
-                                .background(Color.white.opacity(0.75))
-                                .clipShape(Circle())
-                        }
-                        .padding(.leading, 20)
-                        
-                        Spacer()
-                    
-                        // Search Button
-                        Button(action: {
-                            withAnimation {
-                                isShowingSearchField = true
-                                isSearchFieldFocused = true
-                                viewModel.namedLocation = ""
-                            }
-                        }) {
-                            Image(systemName: "magnifyingglass")
-                                .padding()
-                                .background(Color.white.opacity(0.75))
-                                .clipShape(Circle())
-                        }
-                        .padding(.trailing, 20)
-                    }
-                    // Search Text Field
-                    if isShowingSearchField {
-                    TextField("Search", text: $viewModel.namedLocation)
-                        .onSubmit { viewModel.fetchLocation() }
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(.vertical, 12)
-                        .padding(.horizontal)
-                        .background(Color.white.opacity(0.9))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .focused($isSearchFieldFocused)
-                        .frame(width: UIScreen.main.bounds.width * 0.8)
-                    }
-                }
-                Spacer()
-                
-                // Weather Info Widget
-                if let widgetInfo = viewModel.widgetInfo {
-                    WeatherInfoWidget(widgetInfo: widgetInfo)
-                        .onTapGesture {
-                            isShowingWheaterDetailSheet = true
-                        }
-                }
-            }
-            // Display the Weather Details
-            .sheet(isPresented: $isShowingWheaterDetailSheet) {
-                WeatherDetail(geoInfo: viewModel.geoInfo, weatherInfo: viewModel.weatherInfo, forecastInfo: viewModel.forecastInfo, airQualityInfo: viewModel.airQualityInfo, airPollutionForecastInfo: viewModel.airPollutionForecastInfo)
-            }
+            
             
         }
         // Hide Search Field when tapping outside
