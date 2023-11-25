@@ -21,7 +21,6 @@ struct WeatherDataModel {
         weatherData = nil
         forecastData = nil
         airPollutionForecastData = nil
-        //airQualityData = nil
     }
     
     mutating func fetch(for location: String) async {
@@ -233,7 +232,7 @@ struct AirQualityData: Codable, CustomStringConvertible {
         }
 }
 
-// MARK: Structure for Date in View
+// MARK: - Structure for Date in View
 struct WidgetInfo {
     var name: String
     var currentTemp: String
@@ -279,6 +278,8 @@ struct HourlyForecast {
     var time: String
     var icon: String
 }
+
+// MARK: Exstensions
 
 extension Date {
     func dayWord() -> String {

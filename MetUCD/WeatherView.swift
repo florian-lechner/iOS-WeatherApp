@@ -63,6 +63,7 @@ struct WeatherView: View {
                             withAnimation {
                                 isShowingSearchField = true
                                 isSearchFieldFocused = true
+                                viewModel.namedLocation = ""
                             }
                         }) {
                             Image(systemName: "magnifyingglass")
@@ -116,7 +117,7 @@ struct WeatherView: View {
 }
 
 
-// MARK: MapView
+// MARK: - MapView
 struct MapView: UIViewRepresentable {
     @Binding var coordinate: CLLocationCoordinate2D
     var viewModel: WeatherViewModel // To access currentTemp
@@ -201,12 +202,6 @@ struct MapView: UIViewRepresentable {
             return annotationView
         }
         
-        // Pin jumps automatically to center of view
-        /*func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            let center = mapView.centerCoordinate
-            parent.coordinate = center  // Update the binding coordinate
-        }*/
-        
     }
 }
 
@@ -228,7 +223,7 @@ extension MKCoordinateRegion {
 }
 
 
-// MARK: Weather Info Widget View
+// MARK: - Weather Info Widget View
 struct WeatherInfoWidget: View {
     let widgetInfo: WidgetInfo
     
@@ -276,7 +271,7 @@ struct VisualEffectBlur: UIViewRepresentable {
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {}
 }
 
-// MARK: Weather Detail View
+// MARK: - Weather Detail Sheet
 struct WeatherDetail: View {
     let geoInfo: GeoInfo?
     let weatherInfo: WeatherInfo?
@@ -400,37 +395,7 @@ struct WeatherDetail: View {
         .font(.system(size: 14))
     }
     
-    func aqiChart(airPollutionForecastInfo: AirPollutionData?) -> some View {
-        let aqiLabels: [Int: String] = [
-            1: "Good",
-            2: "Fair",
-            3: "Moderate",
-            4: "Poor",
-            5: "Very Poor"
-        ]
-
-        return Chart {
-            if let airPollutionForecastInfo = airPollutionForecastInfo?.list {
-                ForEach(airPollutionForecastInfo, id: \.dt) { forecast in
-                    LineMark(
-                        x: .value("Date", Date(timeIntervalSince1970: TimeInterval(forecast.dt))),
-                        y: .value("AQI", forecast.main.aqi)
-                    )
-                }
-            }
-        }
-        .chartYScale(domain: [1, 5])
-        .chartYAxis {
-            AxisMarks(values: .stride(by: 1)) { value in
-                AxisGridLine()
-                AxisTick()
-                AxisValueLabel {
-                    Text(aqiLabels[value.as(Int.self) ?? 0, default: ""])
-                }
-            }
-        }
-        .frame(height: 200)
-    }
+    
 }
 
 
@@ -439,9 +404,8 @@ struct WeatherDetail: View {
 struct HeaderStyle: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 12)) // Set your desired font style here
-            .foregroundColor(.gray) // Set your desired text color
-            // Add any other styling as needed
+            .font(.system(size: 12))
+            .foregroundColor(.gray)
             .foregroundStyle(.tint)
     }
 }
@@ -455,7 +419,7 @@ struct LowHighStyle: ViewModifier {
     }
 }
 
-// Helper view to display each forecast row
+// View to display each forecast row
 struct ForecastRow: View {
     let dayInfo: ForecastDayInfo
     
@@ -507,7 +471,7 @@ struct SafeImage: View {
     }
 }
 
-// Helper view to display each air quality row
+// View to display each air quality row
 struct AirQualityRow: View {
     let component: String
     let value: Double
@@ -520,6 +484,42 @@ struct AirQualityRow: View {
             Spacer()
             Text(String(format: "%.1f", value))
         }
+    }
+}
+
+// AQI Chart
+struct aqiChart: View {
+    let airPollutionForecastInfo: AirPollutionData?
+    
+    let aqiLabels: [Int: String] = [
+        1: "Good",
+        2: "Fair",
+        3: "Moderate",
+        4: "Poor",
+        5: "Very Poor"
+    ]
+    var body: some View {
+        Chart {
+            if let airPollutionForecastInfo = airPollutionForecastInfo?.list {
+                ForEach(airPollutionForecastInfo, id: \.dt) { forecast in
+                    LineMark(
+                        x: .value("Date", Date(timeIntervalSince1970: TimeInterval(forecast.dt))),
+                        y: .value("AQI", forecast.main.aqi)
+                    )
+                }
+            }
+        }
+        .chartYScale(domain: [1, 5])
+        .chartYAxis {
+            AxisMarks(values: .stride(by: 1)) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    Text(aqiLabels[value.as(Int.self) ?? 0, default: ""])
+                }
+            }
+        }
+        .frame(height: 200)
     }
 }
 

@@ -100,7 +100,7 @@ import MapKit
         )
     }
     
-    // MARK: Public Properties
+    // MARK: - Public Properties
     var airQualityInfo: AirQualityData? { dataModel.airQualityData }
     var airPollutionForecastInfo: AirPollutionData? { dataModel.airPollutionForecastData }
       
@@ -152,8 +152,6 @@ import MapKit
     }
     
     // MARK: Computed properties to construct ForecastInfo
-    // We take the first forecast for each day to represent the daily forecast.
-    // We format the day and temperature strings and append them to the respective arrays.
 
     var forecastInfo: ForecastInfo? {
         guard let forecastData = dataModel.forecastData, let timezoneOffset = dataModel.weatherData?.timezone else { return nil }
@@ -213,7 +211,7 @@ import MapKit
     }
 
     
-    // MARK: Helper Methods
+    // MARK: - Helper Methods
     
     // Convert timestamp to local and UTC time string
     private func timeString(from timestamp: Int, timezoneOffset: Int) -> Array<String> {

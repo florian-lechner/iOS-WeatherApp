@@ -1,29 +1,5 @@
 # Part 2
 
-## Documentation
-
-1. Integrated Location Manager to the WeatherViewModel.
-2. Update View. Integrate MapView. Integrate Authorization (button if not granted)
-3. Add authorization function to ViewModel
-
-Map: Used the MKMapView for integration
-4. ZStack to place fullscreen map in the background
-
-Location Button
-5. MapView be binded to coordinates from ViewModel. Can be updated with button.
-
-Search Bar
-6. Add Searchbar -> hides button when selected. Click outside deselects it.
-7. Fetch function updates the visible coordinates to show searched place.
-
-Coordinates show viewed location
-8. Integrate MKMapViewDelegate
-9. Tapped on location gets annotation.
-
-Weather Detail Sheet
-10. Use sheet for popup
-11. Opens onclick on weather widget
-
 ## Appendix
 
 ### Rough Design Part 1
