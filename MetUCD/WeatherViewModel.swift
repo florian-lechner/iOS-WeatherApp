@@ -2,7 +2,7 @@
 //  WeatherViewModel.swift
 //  MetUCD
 //
-//  Created by Instructor on 20/09/2023.
+//  Created by Florian Lechner on 20/09/2023.
 //
 
 import SwiftUI
