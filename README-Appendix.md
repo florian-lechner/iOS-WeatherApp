@@ -1,43 +1,5 @@
-# Part 2
 
-## Appendix
-
-### Rough Design Part 1
-Search
-(Search bar)
-
-Once Location is searched:
-
-Geo Info
-(Lat, Long)
-(sunrise time, sunset time)
-(timezone offset)
-
-Weather: (description)
-(temp (low, high), feels like)
-(cloud coverage)
-(wind speed, direction)
-(percipation, air pressure)
-
-Air Quality: (description)
-(NO, PM10)
-(O3, NH3)
-(NO2, PM2.5)
-(CO, SO2)
-(Legend that shows "(unit: μg/m3)")
-
-5 Day Forecast
-(Today, (Low temp, High temp))
-(Weekday, (Low temp, High temp))
-(Weekday, (Low temp, High temp))
-(Weekday, (Low temp, High temp))
-(Weekday, (Low temp, High temp))
-(Weekday, (Low temp, High temp))
-
-
-
-
-### Data Structures:
+# Data Structures:
 
 For Lat / Lon: https://openweathermap.org/api/geocoding-api
 
@@ -45,7 +7,7 @@ For Lat / Lon: https://openweathermap.org/api/geocoding-api
 API Respond data example:
 
 
-# Weather API
+## Weather API
 
 `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}`
 
